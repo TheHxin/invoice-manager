@@ -49,7 +49,7 @@ def createToken(data: dict, expire_delta: timedelta = timedelta(minutes=15)): #e
     encoded_jwt = jwt.encode(data_copy, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def getCurrentUser(token: Annotated[str, Depends(oauth2_scheme)], session : Session):
+def getCurrentUser(token: Annotated[str, Depends(oauth2_scheme)], session : Session): #does not need to be async as uvicorn will make a coroutine for it auto
 
     credintials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -59,7 +59,7 @@ async def getCurrentUser(token: Annotated[str, Depends(oauth2_scheme)], session 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("sub")
-        if username in None:
+        if username is None:
             raise credintials_exception
         token_data = TokenData(username=username)
     except InvalidTokenError:

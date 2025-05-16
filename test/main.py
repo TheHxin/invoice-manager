@@ -5,6 +5,8 @@ from models.user import *
 
 from sqlalchemy.exc import IntegrityError
 
+from jwt_test import hashPassword
+
 app = FastAPI()
 
 sql_url = "sqlite:///./data.db"
@@ -34,7 +36,10 @@ def post_user(user: UserPost, session: SessionDep) -> UserBase:
 
     user_db = User()
     user_db.username = user.username
-    user_db.password_hashed = user.password
+    user_db.password_hashed = hashPassword(user.password)
+    user_db.full_name = user.full_name
+    user_db.email = user.email
+
     session.add(user_db)
     try:
         session.commit()
@@ -44,7 +49,10 @@ def post_user(user: UserPost, session: SessionDep) -> UserBase:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username already exists")
 
     user_return = UserBase()
-    user_return.username = user.username
+    user_return.id = user_db.id
+    user_return.username = user_db.username
+    user_return.email = user_db.email
+    user_return.full_name = user_db.full_name
 
     return user_return
 
@@ -56,6 +64,8 @@ def get_users(session: SessionDep) -> list[UserBase]:
         user_return = UserBase()
         user_return.id = user_db.id
         user_return.username = user_db.username
+        user_return.email = user_db.email
+        user_return.full_name = user_db.full_name
 
         users_return.append(user_return)
     
@@ -71,6 +81,8 @@ def get_user_username(username : str, session : SessionDep) -> UserBase:
 
     user_return.id = user_db.id
     user_return.username = user_db.username
+    user_return.email = user_db.email
+    user_return.full_name = user_db.full_name
 
     return user_return
 
