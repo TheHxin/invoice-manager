@@ -49,7 +49,7 @@ def createToken(data: dict, expire_delta: timedelta = timedelta(minutes=15)): #e
     encoded_jwt = jwt.encode(data_copy, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-async def getCurrentUser(token: Annotated[str, Depends(oauth2_scheme)], session : SessionDep):
+async def getCurrentUser(token: Annotated[str, Depends(oauth2_scheme)], session : Session):
 
     credintials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -69,7 +69,13 @@ async def getCurrentUser(token: Annotated[str, Depends(oauth2_scheme)], session 
     if user_db is None:
         raise credintials_exception
 
-    return user_db
+    user_return = UserBase()
+    user_return.id = user_db.id
+    user_return.username = user_db.username
+    user_return.email = user_db.email
+    user_return.full_name = user_db.full_name
+
+    return user_return
 
 
 @app.post("/token")
@@ -89,3 +95,7 @@ async def login(form_data : Annotated[OAuth2PasswordRequestForm, Depends()], ses
         data={"sub" : user.username},
         expire_delta=access_token_expires)
     return Token(access_token=access_token, token_type="bearer")
+
+@app.get("/users/me")
+def getMe(token: Annotated[str, Depends(oauth2_scheme)], session : SessionDep):
+    return getCurrentUser(token=token, session=session)
