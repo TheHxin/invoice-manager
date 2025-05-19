@@ -19,9 +19,9 @@ docs_build
 site_build
 venv
 .venv
+test/data.db
 docs.zip
 archive.zip
-test
 commitscheme.txt
 
 # vim temporary files

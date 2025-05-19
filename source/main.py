@@ -1,5 +1,5 @@
-from useractions import router as actions_router
-from jwt_test2 import router as auth_router
+from user_manager import router as actions_router
+from auth import router as auth_router
 from sqlmodel import SQLModel
 from fastapi import FastAPI
 from database import *
