@@ -5,7 +5,7 @@ from typing import Optional, List
 
 class AccountParty(SQLModel, table=True):
     id : int = Field(default=None, primary_key=True)
-    name : str = Field(default=None, index=True)
+    name : str = Field(default=None, index=True, unique=True)
     incoming : List["Invoice"] = Relationship(back_populates="destination") #Why Invoice in "" becuase Invoice is not defined yet and is a forward refrencing
     outgoing : List["Invoice"] = Relationship(back_populates="origin")
 
