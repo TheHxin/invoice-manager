@@ -1,4 +1,5 @@
 from user_manager import router as actions_router
+from invoice_manager import router as invoice_router
 from auth import router as auth_router
 from sqlmodel import SQLModel
 from fastapi import FastAPI
@@ -16,3 +17,4 @@ def on_startup():
 
 app.include_router(auth_router)
 app.include_router(actions_router)
+app.include_router(invoice_router)
