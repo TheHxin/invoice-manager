@@ -30,14 +30,14 @@ def add_accountparty(name):
         session.commit()
         session.refresh(accountparty)
 
-def add_invoice(amount : Decimal, issued : date, due : date, origin : AccountParty | None, destination : AccountParty | None):
+def add_invoice(amount : Decimal, issued : date, due : date, origin_id : int | None, destination_id : int | None):
     with Session(engine) as session:
         invoice = Invoice()
         invoice.amount = amount
         invoice.issued = issued
         invoice.due = due
-        invoice.origin = origin
-        invoice.destination = destination
+        invoice.origin_id = origin_id
+        invoice.destination_id = destination_id
 
         session.add(invoice)
         session.commit()
@@ -52,8 +52,9 @@ add_accountparty("nvidia")
 with Session(engine) as session:
     origin = session.exec(select(AccountParty).where(AccountParty.name == "intel")).first()
     destination = session.exec(select(AccountParty).where(AccountParty.name == "amd")).first()
-add_invoice(amount=Decimal(123.12), 
-            issued=date(2000,2,2), 
-            due=date(2001,2,2), 
-            origin=origin, 
-            destination=destination)
+if origin is not None and destination is not None:
+    add_invoice(amount=Decimal(123.12), 
+                issued=date(2000,2,2), 
+                due=date(2001,2,2), 
+                origin_id=origin.id, 
+                destination_id=destination.id)
