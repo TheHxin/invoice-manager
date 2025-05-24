@@ -1,0 +1,11 @@
+"filename", "language", "Python", "MS SQL", "comment", "blank", "total"
+"/home/deb/projects/invoice-manager/source/auth.py", "Python", 73, 0, 0, 19, 92
+"/home/deb/projects/invoice-manager/source/data.db", "MS SQL", 0, 29, 0, 0, 29
+"/home/deb/projects/invoice-manager/source/database.py", "Python", 11, 0, 0, 3, 14
+"/home/deb/projects/invoice-manager/source/invoice_manager.py", "Python", 30, 0, 0, 11, 41
+"/home/deb/projects/invoice-manager/source/main.py", "Python", 15, 0, 0, 5, 20
+"/home/deb/projects/invoice-manager/source/models/invoice.py", "Python", 17, 0, 0, 6, 23
+"/home/deb/projects/invoice-manager/source/models/user.py", "Python", 12, 0, 0, 4, 16
+"/home/deb/projects/invoice-manager/source/root_db.py", "Python", 50, 0, 0, 10, 60
+"/home/deb/projects/invoice-manager/source/user_manager.py", "Python", 59, 0, 0, 17, 76
+"Total", "-", 267, 29, 0, 75, 371

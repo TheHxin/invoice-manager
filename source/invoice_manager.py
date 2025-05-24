@@ -16,7 +16,7 @@ def post_account_party(current_user: Annotated[str, Depends(getCurrentUser)],acc
         session.commit()
         session.refresh(account_party)
     except IntegrityError:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="AccountParty with similar name exists")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="AccountParty with same name exists")
     return account_party
 
 @router.get("/account_party/{name}")
