@@ -23,7 +23,7 @@ class Invoice(SQLModel, table=True):
 
 class AccountParty(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    name: int | None = Field(default=None, unique=True, index=True)
+    name: str | None = Field(default=None, unique=True, index=True)
 
     incoming: list["Invoice"] = Relationship(
         back_populates="destination",
