@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice Manager</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f0f0f0; }
+    form > * { margin: 0.5rem 0; display: block; }
+    input, button { padding: 8px; width: 100%; max-width: 300px; }
+  </style>
+</head>
+<body>
+
+  <h1>Invoice Manager</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Origin</th>
+        <th>Destination</th>
+        <th>Amount</th>
+        <th>Issued Date</th>
+        <th>Due Date</th>
+      </tr>
+    </thead>
+    <tbody id="invoiceTableBody">
+      <!-- Dynamic Rows -->
+    </tbody>
+  </table>
+
+  <h2>Add New Invoice</h2>
+  <form id="invoiceForm">
+    <input type="text" id="origin" placeholder="Origin" required />
+    <input type="text" id="destination" placeholder="Destination" required />
+    <input type="number" id="amount" placeholder="Amount" required />
+    <input type="date" id="issuedDate" required />
+    <input type="date" id="dueDate" required />
+    <button type="submit">Add Invoice</button>
+  </form>
+
+  <script>
+    const invoiceTableBody = document.getElementById('invoiceTableBody');
+    const invoiceForm = document.getElementById('invoiceForm');
+
+    async function fetchInvoices() {
+      try {
+        const res = await fetch('/invoices');
+        const invoices = await res.json();
+        invoices.forEach(addInvoiceToTable);
+      } catch (err) {
+        console.error('Failed to fetch invoices:', err);
+      }
+    }
+
+    function addInvoiceToTable(invoice) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${invoice.origin}</td>
+        <td>${invoice.destination}</td>
+        <td>${invoice.amount}</td>
+        <td>${invoice.issuedDate}</td>
+        <td>${invoice.dueDate}</td>
+      `;
+      invoiceTableBody.appendChild(row);
+    }
+
+    invoiceForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const invoice = {
+        origin: document.getElementById('origin').value,
+        destination: document.getElementById('destination').value,
+        amount: parseFloat(document.getElementById('amount').value),
+        issuedDate: document.getElementById('issuedDate').value.toString(),
+        dueDate: document.getElementById('dueDate').value.toString(),
+      };
+
+      try {
+        const res = await fetch('/invoice', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(invoice),
+        });
+
+        if (!res.ok) throw new Error('Server error');
+        addInvoiceToTable(invoice);
+        invoiceForm.reset();
+      } catch (err) {
+        console.error('Failed to upload invoice:', err);
+      }
+    });
+
+    // Load invoices on page load
+    fetchInvoices();
+  </script>
+
+</body>
+</html>
