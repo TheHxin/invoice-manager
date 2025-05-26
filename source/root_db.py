@@ -46,15 +46,15 @@ def add_invoice(amount : Decimal, issued : date, due : date, origin_id : int | N
 
 create_tables()
 add_user("root","root1234")
-add_accountparty("intel")
-add_accountparty("amd")
-add_accountparty("nvidia")
-with Session(engine) as session:
-    origin = session.exec(select(AccountParty).where(AccountParty.name == "intel")).first()
-    destination = session.exec(select(AccountParty).where(AccountParty.name == "amd")).first()
-if origin is not None and destination is not None:
-    add_invoice(amount=Decimal(123.12), 
-                issued=date(2000,2,2), 
-                due=date(2001,2,2), 
-                origin_id=origin.id, 
-                destination_id=destination.id)
+# add_accountparty("intel")
+# add_accountparty("amd")
+# add_accountparty("nvidia")
+# with Session(engine) as session:
+#     origin = session.exec(select(AccountParty).where(AccountParty.name == "intel")).first()
+#     destination = session.exec(select(AccountParty).where(AccountParty.name == "amd")).first()
+# if origin is not None and destination is not None:
+#     add_invoice(amount=Decimal(123.12), 
+#                 issued=date(2000,2,2), 
+#                 due=date(2001,2,2), 
+#                 origin_id=origin.id, 
+#                 destination_id=destination.id)
