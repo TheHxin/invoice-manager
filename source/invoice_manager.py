@@ -51,16 +51,25 @@ def delete_account_party(current_user: Annotated[str, Depends(getCurrentUser)], 
         return {"ok" : False}
     
 
+
 #---------------------------------------------------------------------------------
 
+
+
 @router.post("/invoice")
-def post_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep, invoice : Invoice) -> Invoice:
+def post_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep, invoice : InvoicePublic) -> Invoice:
     db_invoice = Invoice()
     db_invoice.amount = invoice.amount
     db_invoice.due = invoice.due
     db_invoice.issued = invoice.issued
-    db_invoice.origin = invoice.origin
-    db_invoice.destination = invoice.destination
+
+    origin = session.exec(select(AccountParty).where(AccountParty.name == invoice.origin_name)).first()
+    destiantion = session.exec(select(AccountParty).where(AccountParty.name == invoice.destination_name)).first()
+    if origin is None or destiantion is None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="AccountParty mentioned is none existance")
+    
+    db_invoice.origin = origin
+    db_invoice.destination = destiantion
 
     session.add(db_invoice)
     session.commit()
