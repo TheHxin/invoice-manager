@@ -74,7 +74,7 @@ def get_invoices(current_user : Annotated[str, Depends(getCurrentUser)], session
     invoice_list = list(invoice_list)
     return invoice_list
 
-@router.delete("invoice/{id}")
+@router.delete("/invoice/{id}")
 def delete_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep, id : int):
     invoice_found = session.get(Invoice,id)
     if invoice_found is None:

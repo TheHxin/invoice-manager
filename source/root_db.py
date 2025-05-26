@@ -34,8 +34,8 @@ def add_invoice(amount : Decimal, issued : date, due : date, origin_id : int | N
     with Session(engine) as session:
         invoice = Invoice()
         invoice.amount = amount
-        invoice.issued = issued
-        invoice.due = due
+        invoice.issued_db = str(issued)
+        invoice.due_db = str(due)
         invoice.origin_id = origin_id
         invoice.destination_id = destination_id
 

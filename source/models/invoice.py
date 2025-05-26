@@ -6,8 +6,8 @@ class Invoice(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
     amount: Decimal | None = Field(default=None)
-    issued: date | None = Field(default=None)
-    due: date | None = Field(default=None)
+    issued: str | None = Field(default=None)
+    due: str | None = Field(default=None)
 
     origin_id: int | None = Field(default=None, foreign_key="accountparty.id")
     destination_id: int | None = Field(default=None, foreign_key="accountparty.id")
@@ -20,6 +20,7 @@ class Invoice(SQLModel, table=True):
         back_populates="incoming",
         sa_relationship_kwargs={"foreign_keys": "[Invoice.destination_id]"}
     )
+
 
 class AccountParty(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
