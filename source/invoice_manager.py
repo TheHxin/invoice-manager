@@ -59,8 +59,8 @@ def post_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session
     db_invoice.amount = invoice.amount
     db_invoice.due = invoice.due
     db_invoice.issued = invoice.issued
-    db_invoice.origin_id = invoice.origin_id
-    db_invoice.destination_id = invoice.destination_id
+    db_invoice.origin = invoice.origin
+    db_invoice.destination = invoice.destination
 
     session.add(db_invoice)
     session.commit()

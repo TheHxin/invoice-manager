@@ -34,8 +34,8 @@ def add_invoice(amount : Decimal, issued : date, due : date, origin_id : int | N
     with Session(engine) as session:
         invoice = Invoice()
         invoice.amount = amount
-        invoice.issued_db = str(issued)
-        invoice.due_db = str(due)
+        invoice.issued = str(issued)
+        invoice.due = str(due)
         invoice.origin_id = origin_id
         invoice.destination_id = destination_id
 
@@ -46,15 +46,31 @@ def add_invoice(amount : Decimal, issued : date, due : date, origin_id : int | N
 
 create_tables()
 add_user("root","root1234")
-# add_accountparty("intel")
-# add_accountparty("amd")
-# add_accountparty("nvidia")
-# with Session(engine) as session:
-#     origin = session.exec(select(AccountParty).where(AccountParty.name == "intel")).first()
-#     destination = session.exec(select(AccountParty).where(AccountParty.name == "amd")).first()
-# if origin is not None and destination is not None:
-#     add_invoice(amount=Decimal(123.12), 
-#                 issued=date(2000,2,2), 
-#                 due=date(2001,2,2), 
-#                 origin_id=origin.id, 
-#                 destination_id=destination.id)
+add_accountparty("intel")
+add_accountparty("amd")
+add_accountparty("nvidia")
+with Session(engine) as session:
+    origin = session.exec(select(AccountParty).where(AccountParty.name == "intel")).first()
+    destination = session.exec(select(AccountParty).where(AccountParty.name == "amd")).first()
+if origin is not None and destination is not None:
+    #     add_invoice(amount=Decimal(123.12), 
+    #                 issued=date(2000,2,2), 
+    #                 due=date(2001,2,2), 
+    #                 origin_id=origin.id, 
+    #                 destination_id=destination.id)
+        
+    # with Session(engine) as session:
+    #     get_invoice = session.exec(select(Invoice)).all()
+    #     get_invoice = list(get_invoice)
+    #     print(get_invoice[0].destination.name)
+    with Session(engine) as session:
+        invoice_db = Invoice()
+        invoice_db.amount = Decimal(123.123)
+        invoice_db.due = "kir at this point"
+        invoice_db.issued = "kir at that point"
+        invoice_db.origin = origin
+        invoice_db.destination = destination
+
+        session.add(invoice_db)
+        session.commit()
+        session.refresh(invoice_db)
