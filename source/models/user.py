@@ -14,3 +14,7 @@ class UserAuth(UserBase):
 
 class UserPost(UserBase):
     password : str #this feild is given by the client when creating a new user OBJ
+
+class UserLogin(SQLModel):
+    username : str
+    password : str

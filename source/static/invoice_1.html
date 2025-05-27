@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invoice Manager</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #f0f0f0; }
+    form > * { margin: 0.5rem 0; display: block; }
+    input, button { padding: 8px; width: 100%; max-width: 300px; }
+  </style>
+</head>
+<body>
+
+  <h1>Invoice Manager</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Origin</th>
+        <th>Destination</th>
+        <th>Amount</th>
+        <th>Issued Date</th>
+        <th>Due Date</th>
+      </tr>
+    </thead>
+    <tbody id="invoiceTableBody">
+      <!-- Dynamic Rows -->
+    </tbody>
+  </table>
+
+  <h2>Add New Invoice</h2>
+  <form id="invoiceForm">
+    <input type="text" id="origin" placeholder="Origin" required />
+    <input type="text" id="destination" placeholder="Destination" required />
+    <input type="number" id="amount" placeholder="Amount" required />
+    <input type="date" id="issuedDate" required />
+    <input type="date" id="dueDate" required />
+    <button type="submit">Add Invoice</button>
+  </form>
+  <form>
+    <input type="text" placeholder="username" id="username">
+    <input type="text" placeholder="password" id="password">
+    <button type="submit" onclick="login()">Authenticate</button>
+  </form>
+
+  <script>
+    const invoiceTableBody = document.getElementById('invoiceTableBody');
+    const invoiceForm = document.getElementById('invoiceForm');
+    
+    async function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/token", {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token') },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem('token', data.token);  // Save JWT
+          alert('Logged in!');
+          fetchInvoices(); // or any other secured action
+        } else {
+          alert('Login failed: ' + data.message);
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+      }
+    }
+
+
+    async function fetchInvoices() {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/invoices");
+        const invoices = await res.json();
+        invoices.forEach(addInvoiceToTable);
+      } catch (err) {
+        console.error('Failed to fetch invoices:', err);
+      }
+    }
+
+    function addInvoiceToTable(invoice) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${invoice.origin}</td>
+        <td>${invoice.destination}</td>
+        <td>${invoice.amount}</td>
+        <td>${invoice.issuedDate}</td>
+        <td>${invoice.dueDate}</td>
+      `;
+      invoiceTableBody.appendChild(row);
+    }
+
+    invoiceForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const invoice = {
+        origin: document.getElementById('origin').value,
+        destination: document.getElementById('destination').value,
+        amount: parseFloat(document.getElementById('amount').value),
+        issuedDate: document.getElementById('issuedDate').value.toString(),
+        dueDate: document.getElementById('dueDate').value.toString(),
+      };
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/invoice", {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+           },
+          body: JSON.stringify(invoice),
+        });
+
+        if (!res.ok) throw new Error('Server error');
+        fetchInvoices();
+        invoiceForm.reset();
+      } catch (err) {
+        console.error('Failed to upload invoice:', err);
+      }
+    });
+
+    // Load invoices on page load
+  </script>
+
+</body>
+</html>

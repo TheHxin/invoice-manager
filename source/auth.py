@@ -87,6 +87,24 @@ async def login(form_data : Annotated[OAuth2PasswordRequestForm, Depends()], ses
         expire_delta=access_token_expires)
     return Token(access_token=access_token, token_type="bearer")
 
+@router.post("/token_json")
+async def login_json(login_data : UserLogin, session: SessionDep) -> Token:
+    
+    user = session.exec(select(User).where(User.username == login_data.username)).first() 
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    if not verifyPassword(login_data.password, user.password_hashed):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Cred not valid -> incorrect username or password",
+            headers={"WWW-Authenticate" : "Bearer"}
+        )
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = createToken(
+        data={"sub" : user.username},
+        expire_delta=access_token_expires)
+    return Token(access_token=access_token, token_type="bearer")
+
 @router.get("/users/me")
 def getMe(token: Annotated[str, Depends(oauth2_scheme)], session : SessionDep):
     return getCurrentUser(token=token, session=session)
