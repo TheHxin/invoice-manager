@@ -74,15 +74,24 @@
         });
 
       } catch(err) {
-        console.error("Login failed for some fucking reason", err);
+        console.error("Login failed: ", err);
       }
     });
     
     async function fetchInvoices() {
       try {
-        const res = await fetch("http://127.0.0.1:8000/invoices");
-        const invoices = await res.json();
-        invoices.forEach(addInvoiceToTable);
+        await fetch("http://127.0.0.1:8000/invoices",
+          {
+            headers: { 
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+           }
+          }
+        )
+        .then(response => response.json())
+        .then(data => data.forEach(invoice => {
+          addInvoiceToTable(invoice);
+        }));
+
       } catch (err) {
         console.error('Failed to fetch invoices:', err);
       }
@@ -103,11 +112,11 @@
     invoiceForm.addEventListener('submit', async (e) => {
       e.preventDefault(); //will cancel the default action of the form
       const invoice = {
-        origin: document.getElementById('origin').value,
-        destination: document.getElementById('destination').value,
+        origin_name: document.getElementById('origin').value,
+        destination_name: document.getElementById('destination').value,
         amount: document.getElementById('amount').value,
-        issuedDate: document.getElementById('issuedDate').value.toString(),
-        dueDate: document.getElementById('dueDate').value.toString()
+        issued: document.getElementById('issuedDate').value.toString(),
+        due: document.getElementById('dueDate').value.toString()
       };
 
       try {
