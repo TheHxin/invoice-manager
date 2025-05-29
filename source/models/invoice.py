@@ -5,7 +5,7 @@ from datetime import date
 class InvoiceBase(SQLModel):
         id: int | None = Field(default=None, primary_key=True)
 
-        amount: Decimal | None = Field(default=None)
+        amount: str | None = Field(default=None) # will be converted into the
         issued: str | None = Field(default=None)
         due: str | None = Field(default=None)
 
