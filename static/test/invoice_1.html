@@ -41,14 +41,46 @@
     <input type="date" id="dueDate" required />
     <button type="submit">Add Invoice</button>
   </form>
+  <form>
+    <input type="text" placeholder="username" id="username">
+    <input type="text" placeholder="password" id="password">
+    <button type="submit" onclick="login()">Authenticate</button>
+  </form>
 
   <script>
     const invoiceTableBody = document.getElementById('invoiceTableBody');
     const invoiceForm = document.getElementById('invoiceForm');
+    
+    async function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch("/token", {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token') },
+          body: JSON.stringify({ username, password }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem('token', data.token);  // Save JWT
+          alert('Logged in!');
+          fetchInvoices(); // or any other secured action
+        } else {
+          alert('Login failed: ' + data.message);
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+      }
+    }
+
 
     async function fetchInvoices() {
       try {
-        const res = await fetch('/invoices');
+        const res = await fetch("/invoices");
         const invoices = await res.json();
         invoices.forEach(addInvoiceToTable);
       } catch (err) {
@@ -79,14 +111,17 @@
       };
 
       try {
-        const res = await fetch('/invoice', {
+        const res = await fetch("/invoice", {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+           },
           body: JSON.stringify(invoice),
         });
 
         if (!res.ok) throw new Error('Server error');
-        addInvoiceToTable(invoice);
+        fetchInvoices();
         invoiceForm.reset();
       } catch (err) {
         console.error('Failed to upload invoice:', err);
@@ -94,7 +129,6 @@
     });
 
     // Load invoices on page load
-    fetchInvoices();
   </script>
 
 </body>

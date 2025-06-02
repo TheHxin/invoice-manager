@@ -46,6 +46,7 @@
     <input type="text" name="password" id="password">
     <input type="submit">
   </form>
+  <button onclick="fetchInvoices()">Fetch</button>
 
   <script>
     const invoiceTableBody = document.getElementById('invoiceTableBody');
@@ -100,11 +101,11 @@
     function addInvoiceToTable(invoice) {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${invoice.origin}</td>
-        <td>${invoice.destination}</td>
+        <td>${invoice.origin_name}</td>
+        <td>${invoice.destination_name}</td>
         <td>${invoice.amount}</td>
-        <td>${invoice.issuedDate}</td>
-        <td>${invoice.dueDate}</td>
+        <td>${invoice.issued}</td>
+        <td>${invoice.due}</td>
       `;
       invoiceTableBody.appendChild(row);
     }

@@ -2,18 +2,18 @@ from sqlmodel import SQLModel, Field, Relationship
 from decimal import Decimal
 from datetime import date
 
-class InvoiceBase(SQLModel):
-        id: int | None = Field(default=None, primary_key=True)
+class InvoicePublic(SQLModel):
+    amount : str | None # to be decimal
+    issued : str | None # to be date
+    
 
-        amount: str | None = Field(default=None) # will be converted into Decimal
-        issued: str | None = Field(default=None) # will be converted into date
-        due: str | None = Field(default=None) # will be converted into date
+class Invoice(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
 
-class InvoicePublic(InvoiceBase):
-    origin_name : str | None
-    destination_name : str | None
+    amount: Decimal | None = Field(default=None)
+    issued: str | None = Field(default=None)
+    due: str | None = Field(default=None)
 
-class Invoice(InvoiceBase, table=True):
     origin_id: int | None = Field(default=None, foreign_key="accountparty.id")
     destination_id: int | None = Field(default=None, foreign_key="accountparty.id")
 
@@ -30,11 +30,11 @@ class AccountParty(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str | None = Field(default=None, unique=True, index=True)
 
-    incoming: list["Invoice"] | None = Relationship(
+    incoming: list["Invoice"] = Relationship(
         back_populates="destination",
         sa_relationship_kwargs={"foreign_keys": "[Invoice.destination_id]"}
     )
-    outgoing: list["Invoice"] | None = Relationship(
+    outgoing: list["Invoice"] = Relationship(
         back_populates="origin",
         sa_relationship_kwargs={"foreign_keys": "[Invoice.origin_id]"}
     )
