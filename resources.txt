@@ -1,0 +1,3 @@
+NOTE: most of the links in this file with be refrenced from the Fastapi docs [fastapi.tiangolo.com]
+
+https://fastapi.tiangolo.com/tutorial/extra-models/ -> 

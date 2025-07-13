@@ -1,0 +1,149 @@
+commit 7f5c3f422eb5fa19ff5a61c92c01fb393619e638
+Author: deb <hxin.radin@gmail.com>
+Date:   Mon Jun 2 09:02:46 2025 +0200
+
+    Update invoice [test invoice relations]
+
+commit 9918756548012d6f099f9a8f118f31455a6234ae
+Author: deb <hxin.radin@gmail.com>
+Date:   Thu May 29 15:45:33 2025 +0200
+
+    Update invoice.html [impelimetn auth]
+
+commit 4af663ab3ae48696b5680973720cc5fa2541d4ca
+Author: deb <hxin.radin@gmail.com>
+Date:   Thu May 29 11:50:07 2025 +0200
+
+    Added auth js [to login to backend]
+
+commit 2b47a73c0acacb3b766aabc5420f2d7b0bda7b09
+Author: deb <hxin.radin@gmail.com>
+Date:   Thu May 29 11:45:51 2025 +0200
+
+    Update main entry [to load the index page]
+
+commit d73fe56d627841d81cdfcdfa663e47d8984737f6
+Author: deb <hxin.radin@gmail.com>
+Date:   Tue May 27 10:54:42 2025 +0200
+
+    Added auth route for authentication with json
+
+commit 28cfbb9c52eecc3883ed350068883fa9e2ceb948
+Author: deb <hxin.radin@gmail.com>
+Date:   Mon May 26 23:04:58 2025 +0200
+
+    Update invoice manager [impelimented the new invoice objects into routes]
+
+commit 43d9351f009b2f3ac6a827256a3044c00b683ade
+Author: deb <hxin.radin@gmail.com>
+Date:   Mon May 26 22:47:40 2025 +0200
+
+    Update invoice model [made invoice base and public for better data flow]
+
+commit d7760deb27ca7db24afa6facafc7b80bd0164120
+Author: deb <hxin.radin@gmail.com>
+Date:   Mon May 26 21:21:46 2025 +0200
+
+    Added static folder [began front-end main part]
+
+commit 42d4cec102722984f9ec87d0dcf5b169606de76e
+Author: deb <hxin.radin@gmail.com>
+Date:   Mon May 26 09:46:37 2025 +0200
+
+    Update invoice manager [fixed the invoice delete route and date in post route]
+
+commit 99159bdd182034617f5c7d9047f3f9577342e084
+Author: deb <hxin.radin@gmail.com>
+Date:   Mon May 26 09:35:43 2025 +0200
+
+    Update invoice manager [fixed invoice and ac post]
+
+commit 792348cb2e39bff5ba48093dcea5e51c31673189
+Author: deb <hxin.radin@gmail.com>
+Date:   Sat May 24 10:33:56 2025 +0200
+
+    Added invoice routers [not finished]
+
+commit 52855bc4e45cb9ba4c9bb4f7ac11b4610350892d
+Author: deb <hxin.radin@gmail.com>
+Date:   Sat May 24 10:22:45 2025 +0200
+
+    Update invoice models [fixed relationship between acocountparty and invoices fully impelimented]
+
+commit 91d22ab560100406f742bb756275607a78ea8d60
+Author: deb <hxin.radin@gmail.com>
+Date:   Fri May 23 00:24:04 2025 +0200
+
+    Update invoice models [fixing invoice models relationship in db]
+
+commit 9e29c3340b599f2acad7c81e29c02cc7b58bff60
+Author: deb <hxin.radin@gmail.com>
+Date:   Wed May 21 10:46:12 2025 +0200
+
+    Update invoice models [initiate fixing the relations of invoice and accountparty]
+
+commit 905400a26bd29d4faaa1761b0445347e6959c99a
+Author: deb <hxin.radin@gmail.com>
+Date:   Mon May 19 11:05:58 2025 +0200
+
+    Update invoice models and manager [finished the simple functions of account party management]
+
+commit f9e858c59ae9bd5b73cbd6e2e4d1df3c4b38af02
+Author: deb <hxin.radin@gmail.com>
+Date:   Mon May 19 10:06:49 2025 +0200
+
+    Add invoice models [created invoice and account party models and began controllers]
+
+commit 8afa4f14682206d2346c40375931ff2b8d5c27a1
+Author: deb <hxin.radin@gmail.com>
+Date:   Sat May 17 12:18:15 2025 +0200
+
+    Update project file scheme
+
+commit 3067aed54ce0042743240f73ff86c5ebae80904f
+Author: deb <hxin.radin@gmail.com>
+Date:   Sat May 17 12:08:56 2025 +0200
+
+    Update quick_change [finished first test of user auth / user managment]
+
+commit ec7158de933218a25da79f844b8aed9a17e1ca22
+Author: deb <hxin.radin@gmail.com>
+Date:   Fri May 16 23:02:04 2025 +0200
+
+    Update test/jwt and test/main [jwt test done / main test impelimented the added userbase feilds]
+
+commit a97d6570f0a74235a120ef0de2b794858c2815a6
+Author: deb <hxin.radin@gmail.com>
+Date:   Fri May 16 22:28:57 2025 +0200
+
+    Update requirements.txt [added python-multipart for reading the form data]
+
+commit 4fdb09fdd7065c6377b8f8f6e663414e922251e4
+Author: deb <hxin.radin@gmail.com>
+Date:   Fri May 16 22:22:39 2025 +0200
+
+    Update test uset model [added fullname and email to userbase]
+
+commit c46151f1e27a8f5386e435219b5d2bb0b2dc5bd2
+Author: deb <hxin.radin@gmail.com>
+Date:   Fri May 16 22:19:06 2025 +0200
+
+    Add test folder [containes the test for user authentication]
+
+commit ebdca095f3545934d3812e2b369dc3c42dc8d30f
+Author: deb <hxin.radin@gmail.com>
+Date:   Fri May 16 22:16:37 2025 +0200
+
+    Update requirements.txt [for jwt and password hashing]
+
+commit eeccda4a2be3e37eb86812b53adcd932788ead9c
+Author: deb <hxin.radin@gmail.com>
+Date:   Tue May 13 09:06:25 2025 +0200
+
+    Updated Requirements [added JWT req]
+
+commit 25bf6ba457b5ab33e3d1ef9898006777973d76f6
+Author: deb <hxin.radin@gmail.com>
+Date:   Wed May 7 11:05:50 2025 +0200
+
+    Initial Commit
