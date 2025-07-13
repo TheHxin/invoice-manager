@@ -6,21 +6,29 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from database import *
+from contextlib import asynccontextmanager
+
 
 
 def initDB():
     SQLModel.metadata.create_all(engine)
 
-app = FastAPI()
+@asynccontextmanager 
+async def lifespan(app : FastAPI): # runs the code before "yeild" before app startup and runs the code after yeild at shutdown
+    initDB() #startup code here
+     
+    yield
+
+    #shutdown code here
+
+app = FastAPI(lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="static"), name = "static")
 
 @app.get("/")
 async def index():
     return FileResponse("static/invoice_1.html")
 
-@app.on_event("startup") #TODO: use lifespan event handler
-def on_startup():
-    initDB()
+
 
 app.include_router(auth_router)
 app.include_router(actions_router)
