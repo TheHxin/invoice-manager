@@ -19,6 +19,7 @@ docs_build
 site_build
 venv
 .venv
+.VSCodeCounter
 test/data.db
 docs.zip
 archive.zip
