@@ -9,7 +9,7 @@ from database import *
 router = APIRouter()
 
 
-@router.post("/account")
+@router.post("/account", status_code=status.HTTP_201_CREATED)
 def post_account(current_user: Annotated[str, Depends(getCurrentUser)],account : AccountPost, session : SessionDep) -> Account:
     account_db = Account(**account.dict())
     session.add(account_db)
@@ -20,13 +20,13 @@ def post_account(current_user: Annotated[str, Depends(getCurrentUser)],account :
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Account with same name exists")
     return account_db
 
-@router.get("/accounts")
+@router.get("/accounts", status_code=status.HTTP_200_OK)
 def get_account_parties(current_user: Annotated[str, Depends(getCurrentUser)], session : SessionDep) -> list[Account]:
     accounts = session.exec(select(Account)).all()
     accounts = list(accounts)
     return accounts
 
-@router.get("/account/{name}")
+@router.get("/account/{name}", status_code=status.HTTP_200_OK)
 def get_account_name(current_user: Annotated[str, Depends(getCurrentUser)], session : SessionDep, name : str) -> Account:
     account = session.exec(select(Account).where(Account.name == name)).first()
 
