@@ -35,7 +35,7 @@ def get_account_name(current_user: Annotated[str, Depends(getCurrentUser)], sess
     
     return account
 
-@router.delete("/account/{id}") #updated
+@router.delete("/account/{id}", status_code=status.HTTP_204_NO_CONTENT) #updated
 def delete_account(current_user: Annotated[str, Depends(getCurrentUser)], session : SessionDep, id : int):
     account = session.get(Account, id)
     if account is None:
@@ -43,10 +43,10 @@ def delete_account(current_user: Annotated[str, Depends(getCurrentUser)], sessio
     try:
         session.delete(account)
         session.commit()
-        return {"ok" : True}
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-    except:
-        return {"ok" : False}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=repr(e))
     
 
 
