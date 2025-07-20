@@ -95,7 +95,7 @@ def get_invoices(current_user : Annotated[str, Depends(getCurrentUser)], session
 
     return invoices
 
-@router.delete("/invoice/{id}") #updated
+@router.delete("/invoice/{id}", status_code=status.HTTP_204_NO_CONTENT) #TODO: do 2 o 4 for deletes
 def delete_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep, id : int):
     invoice_found = session.get(Invoice,id)
     if invoice_found is None:
@@ -103,7 +103,7 @@ def delete_invoice(current_user : Annotated[str, Depends(getCurrentUser)], sessi
     try:
         session.delete(invoice_found)
         session.commit()
-        return {"ok" : True}
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-    except:
-        return {"ok" : False}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=repr(e))
