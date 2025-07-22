@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Response
 from sqlalchemy.exc import IntegrityError
 from auth import hashPassword, getCurrentUser
 from sqlmodel import select
@@ -64,13 +64,13 @@ def get_user_username(current_user: Annotated[str, Depends(getCurrentUser)], use
 
     return user_return
 
-@router.delete("/user/{id}")
+@router.delete("/user/{id}", status_code=status.HTTP_204_NO_CONTENT) #TODO: prevent user from deleteing himself
 def delete_user(current_user: Annotated[str, Depends(getCurrentUser)], id: int, session: SessionDep):
     try:
         user = session.get(User, id) #note: session.get is used to get an obj by primary key only and will return only one row
         session.delete(user)
         session.commit()
 
-        return {"ok" : True}
-    except:
-        return {"ok" : False}
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=repr(e))
