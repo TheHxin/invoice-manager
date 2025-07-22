@@ -64,7 +64,7 @@ def get_user_username(current_user: Annotated[str, Depends(getCurrentUser)], use
 
     return user_return
 
-@router.delete("/user/{id}", status_code=status.HTTP_204_NO_CONTENT) #TODO: prevent user from deleteing himself
+@router.delete("/user/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(current_user: Annotated[UserBase, Depends(getCurrentUser)], id: int, session: SessionDep):
     if current_user.id == id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="cannot delete current user")

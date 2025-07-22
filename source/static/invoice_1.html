@@ -89,6 +89,7 @@
           }
         )
         .then(response => response.json())
+        .then(clearTable())
         .then(data => data.forEach(invoice => {
           addInvoiceToTable(invoice);
         }));
@@ -101,13 +102,16 @@
     function addInvoiceToTable(invoice) {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${invoice.origin_name}</td>
-        <td>${invoice.destination_name}</td>
+        <td>${invoice.origin}</td>
+        <td>${invoice.destination}</td>
         <td>${invoice.amount}</td>
         <td>${invoice.issued}</td>
         <td>${invoice.due}</td>
       `;
       invoiceTableBody.appendChild(row);
+    }
+    function clearTable(){
+      invoiceTableBody.innerHTML = "";
     }
 
     invoiceForm.addEventListener('submit', async (e) => {

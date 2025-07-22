@@ -72,7 +72,7 @@ def post_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session
     return invoice_db
 
 @router.get("/invoices", status_code=status.HTTP_200_OK)
-def get_invoices(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep) -> list[Invoice]:
+def get_invoices(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep) -> list[InvoiceGet]:
     invoices_db = list(session.exec(select(Invoice)).all())
     invoices = []
     for invoice in invoices_db:
