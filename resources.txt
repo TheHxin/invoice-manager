@@ -1,3 +1,53 @@
 NOTE: most of the links in this file with be refrenced from the Fastapi docs [fastapi.tiangolo.com]
 
-https://fastapi.tiangolo.com/tutorial/extra-models/ -> 
+https://fastapi.tiangolo.com/tutorial/extra-models/ -> REMOVE
+
+_________________________________________________________________________________________________________________________________________________________
+
+https://deepwiki.com/fastapi/sqlmodel/2.3-relationship -> 
+
+_________________________________________________________________________________________________________________________________________________________
+
+https://sqlmodel.tiangolo.com/tutorial/many-to-many/create-models-with-link/#team-model -> look at the full code you see how instead of my previous code the linkmodel is used. this is my previous code:
+
+            class Invoice(SQLModel, table=True):
+                id : Optional[int] = Field(default=None, primary_key=True) 
+
+                amount : Decimal = Field(default=None)
+                issued : date = Field(default=None)
+                due : date = Field(default=None)
+
+                origin_id : Optional[int] = Field(default=None, foreign_key="account.id")
+                destination_id : Optional[int] = Field(default=None, foreign_key="account.id")
+
+                origin : Optional["Account"] = Relationship(
+                    back_populates="outgoing",
+                    sa_relationship_kwargs={"foreign_keys" : "[Invoice.origin_id]"}
+                )
+                destination : Optional["Account"] = Relationship(
+                    back_populates="incoming",
+                    sa_relationship_kwargs={"foreign_keys" : "[Invoice.destination_id]"}
+                )   
+
+
+            class AccountBase(SQLModel):
+                name : Optional[str] = Field(default=None, unique=True)
+
+            class Account(AccountBase, table = True):
+                id : Optional[int] = Field(default=None, primary_key=True) #note that the primary key columbn must be nullable in pydantic for sqlmodel to fill it out
+                
+                incoming : list[Invoice] = Relationship(
+                    back_populates="destination",
+                    sa_relationship_kwargs={"foreign_keys" : "[Invoice.destination_id]"}
+                )
+                outgoing : list[Invoice] = Relationship(
+                    back_populates="origin",
+                    sa_relationship_kwargs={"foreign_keys" : "[Invoice.origin_id]"}
+                )
+
+
+    NOTE : THE LINK TABLE CAN NOT BE USED -> the link table is for many to many. each invoice has only one origin and one destination. the confusion is in the fact that each invoice will be connected tutorial
+    two accounts but one for each feild of origin and destination thus out relationship is a ONE TO MANY and it is not convinient to use link tables. we would need two link table.
+_________________________________________________________________________________________________________________________________________________________
+
+https://fastapi.tiangolo.com/tutorial/sql-databases/#run-the-app-again -> this is where the whole scheme of the api is based from. it is the official docs. 

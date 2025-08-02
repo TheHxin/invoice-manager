@@ -1,7 +1,0 @@
-fastapi
-sqlmodel
-uvicorn
-python-jose[cryptography]
-passlib[bcrypt]
-pyjwt
-python-multipart
