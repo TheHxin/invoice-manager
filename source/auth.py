@@ -105,6 +105,6 @@ async def login_json(login_data : UserLogin, session: SessionDep) -> Token:
         expire_delta=access_token_expires)
     return Token(access_token=access_token, token_type="bearer")
 
-@router.get("/users/me")
+@router.get("/me")
 def getMe(token: Annotated[str, Depends(oauth2_scheme)], session : SessionDep):
     return getCurrentUser(token=token, session=session)

@@ -28,7 +28,7 @@ async def lifespan(
 app = FastAPI(lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-origins = ["http://localhost:3000"]
+origins = ["http://localhost:3000", "http://localhost:3000/login"]
 
 app.add_middleware(
     CORSMiddleware,

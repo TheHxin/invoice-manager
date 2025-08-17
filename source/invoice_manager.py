@@ -52,7 +52,20 @@ def delete_account(current_user: Annotated[str, Depends(getCurrentUser)], sessio
 
 #---------------------------------------------------------------------------------
 
+@router.post("/invoice_acname")
+def post_invoice_acname(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep, invoice : InvoicePost_acname) -> Invoice:
+    invoice_db = Invoice(
+        amount=invoice.amount,
+        issued=invoice.issued,
+        due=invoice.due,
+        origin_id=session.exec(select(Account.id).where(Account.name == invoice.origin_name)).first(),
+        destination_id=session.exec(select(Account.id).where(Account.name == invoice.destination_name)).first()
+    )
 
+    session.add(invoice_db)
+    session.commit()
+    session.refresh(invoice_db)
+    return invoice_db
 
 @router.post("/invoice", status_code=status.HTTP_201_CREATED)
 def post_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep, invoice : InvoicePost) -> Invoice:
