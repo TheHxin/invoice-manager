@@ -2,17 +2,28 @@ from sqlmodel import SQLModel, Field, Relationship
 from datetime import date
 from decimal import Decimal
 from typing import Optional
-
+from pydantic import field_validator
 
 class InvoiceBase(SQLModel):
-    amount: Decimal = Field()
+    amount: Decimal = Field(decimal_places=2)
     issued: date = Field()
     due: date = Field()
 
+    @field_validator("amount")
+    def amount_validator(cls, v):
+        if v <= 0:
+            raise ValueError("Amount must be bigger than zero")
+        return v
 
 class InvoicePost(InvoiceBase):
     origin_id: int
     destination_id: int
+
+class InvoicePost_acname(InvoiceBase):
+    origin_name : str
+    destination_name : str
+
+
 
 
 class InvoiceGet(InvoiceBase):

@@ -51,3 +51,7 @@ https://sqlmodel.tiangolo.com/tutorial/many-to-many/create-models-with-link/#tea
 _________________________________________________________________________________________________________________________________________________________
 
 https://fastapi.tiangolo.com/tutorial/sql-databases/#run-the-app-again -> this is where the whole scheme of the api is based from. it is the official docs. 
+
+_________________________________________________________________________________________________________________________________________________________
+
+https://fastapi.tiangolo.com/tutorial/cors/#use-corsmiddleware -> the official doc of fastapi for manangin cors [its middle ware]

@@ -1,3 +1,105 @@
+commit 88716b932b15ccc95b3543611344267a983a1fca
+Author: deb <hxin.radin@gmail.com>
+Date:   Sun Aug 3 22:46:10 2025 +0200
+
+    Added CORS middleware for sepration of the api and the front-end server + development testing
+
+commit ceaab7ec4d7d1d12e956dd9660453f530926b353
+Author: deb <hxin.radin@gmail.com>
+Date:   Sat Aug 2 11:57:53 2025 +0200
+
+    Updated .gitignore
+
+commit 0e7521693bbfe8464363ea2618ae4b5534dc2b0e
+Author: deb <hxin.radin@gmail.com>
+Date:   Tue Jul 22 23:51:49 2025 +0200
+
+    Update front [fixed multiple fetch bug]
+
+commit 1c7797d9b970dfa72a68c4d257b7c4bd86658f90
+Author: deb <hxin.radin@gmail.com>
+Date:   Tue Jul 22 17:31:50 2025 +0200
+
+    Update user-manager.py [added logic to prevent user from deleting himself]
+
+commit 0a0175782d52169ad5f700e91d77f30a716f0aca
+Author: deb <hxin.radin@gmail.com>
+Date:   Tue Jul 22 17:24:04 2025 +0200
+
+    Update user-manager.py [delete api correct output]
+
+commit cde6901a9c9e9bf33867853e3c6a33452ae914e2
+Author: deb <hxin.radin@gmail.com>
+Date:   Sun Jul 20 17:36:31 2025 +0200
+
+    Update invoice-manager [account get and post have correct status codes now]
+
+commit 744b48b993288af6e88afba467ef82f868b2f24c
+Author: deb <hxin.radin@gmail.com>
+Date:   Sun Jul 20 17:34:38 2025 +0200
+
+    Update invoice-manager [invoice post and get api have correct status code now]
+
+commit 2ee0c025dadb18757dc49675c76cdfb25da338a4
+Author: deb <hxin.radin@gmail.com>
+Date:   Sun Jul 20 17:31:05 2025 +0200
+
+     Update invoice-manager [account delete api now has correct output format]
+
+commit 9a151c4d2bd710a7acb42f7978a7c3cb32c58113
+Author: deb <hxin.radin@gmail.com>
+Date:   Sun Jul 20 17:29:18 2025 +0200
+
+    Update invoice-manager [the invoice delete api now has correct output]
+
+commit ad5a7252af1b840298ee02810283cf01c525b9e8
+Author: deb <hxin.radin@gmail.com>
+Date:   Sat Jul 19 19:16:58 2025 +0200
+
+    Update initdb.py [creates a root user]
+
+commit ff029d838a4474b2da1636e75415a2a906ade11c
+Author: deb <hxin.radin@gmail.com>
+Date:   Sat Jul 19 19:09:37 2025 +0200
+
+    Update invoice models and invoice manager [accountparty -> account + more optimized sql relations]
+
+commit 617e1e21638e1469389d81472a293c2e92b7cf4f
+Author: deb <hxin.radin@gmail.com>
+Date:   Sat Jul 19 13:44:57 2025 +0200
+
+    Added db re-initializer script
+
+commit 89be5a25f976d43450db6c78300999b8fe68be9c
+Author: deb <hxin.radin@gmail.com>
+Date:   Sat Jul 19 13:41:14 2025 +0200
+
+    Repo clean
+
+commit 11a1f2ac4366c0026e2ee9a96318472b37db90cb
+Author: deb <hxin.radin@gmail.com>
+Date:   Sun Jul 13 23:57:53 2025 +0200
+
+    Fixing repo July 13 2025 -> messed up git cache
+
+commit 68ce5eac1216c4dcace6b6944eccd6ded24577e1
+Author: deb <hxin.radin@gmail.com>
+Date:   Sun Jul 13 23:55:10 2025 +0200
+
+    Update README.md [was in wrong folder]
+
+commit 9c7ecdf08a41858533b8c0c8c80d1286122927ba
+Author: deb <hxin.radin@gmail.com>
+Date:   Sun Jul 13 23:54:06 2025 +0200
+
+    Added README.md
+
+commit 66dd95143f016373163f8597d44371473dc28704
+Author: deb <hxin.radin@gmail.com>
+Date:   Sun Jul 13 23:38:26 2025 +0200
+
+    Update main.py [did the todo to use the new lifespan function]
+
 commit 7f5c3f422eb5fa19ff5a61c92c01fb393619e638
 Author: deb <hxin.radin@gmail.com>
 Date:   Mon Jun 2 09:02:46 2025 +0200
