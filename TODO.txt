@@ -1,0 +1,7 @@
+1. impeliment data validation at two levels -> db and api [POST]
+    source / destination: must be string - must exist in db - must be utf8
+    issued: can't be in future 
+    due: can't be in past 
+    amount: 2 decimal places / numerical 
+
+2. try/except for internal code errors or db errors 

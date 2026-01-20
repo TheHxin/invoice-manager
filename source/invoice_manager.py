@@ -11,7 +11,7 @@ router = APIRouter()
 
 @router.post("/account", status_code=status.HTTP_201_CREATED)
 def post_account(current_user: Annotated[str, Depends(getCurrentUser)],account : AccountPost, session : SessionDep) -> Account:
-    account_db = Account(**account.dict())
+    account_db = Account(**account.model_dump())
     session.add(account_db)
     try:
         session.commit()
@@ -21,13 +21,13 @@ def post_account(current_user: Annotated[str, Depends(getCurrentUser)],account :
     return account_db
 
 @router.get("/accounts", status_code=status.HTTP_200_OK)
-def get_account_parties(current_user: Annotated[str, Depends(getCurrentUser)], session : SessionDep) -> list[Account]:
+def get_accounts(current_user: Annotated[str, Depends(getCurrentUser)], session : SessionDep) -> list[Account]:
     accounts = session.exec(select(Account)).all()
     accounts = list(accounts)
     return accounts
 
 @router.get("/account/{name}", status_code=status.HTTP_200_OK)
-def get_account_name(current_user: Annotated[str, Depends(getCurrentUser)], session : SessionDep, name : str) -> Account:
+def get_account(current_user: Annotated[str, Depends(getCurrentUser)], session : SessionDep, name : str) -> Account:
     account = session.exec(select(Account).where(Account.name == name)).first()
 
     if account is None:
@@ -52,34 +52,12 @@ def delete_account(current_user: Annotated[str, Depends(getCurrentUser)], sessio
 
 #---------------------------------------------------------------------------------
 
-@router.post("/invoice_acname")
-def post_invoice_acname(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep, invoice : InvoicePost_acname) -> Invoice:
-    try:
-        origin_id_query = session.exec(select(Account.id).where(Account.name == invoice.origin_name)).first()
-        destination_id_query = session.exec(select(Account.id).where(Account.name == invoice.destination_name)).first()
-
-        if origin_id_query == None or destination_id_query == None:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Origin or Destination are non-existant")
-
-        invoice_db = Invoice(
-            amount=invoice.amount,
-            issued=invoice.issued,
-            due=invoice.due,
-            origin_id=origin_id_query,
-            destination_id=destination_id_query
-        )
-
-        session.add(invoice_db)
-        session.commit()
-        session.refresh(invoice_db)
-        return invoice_db
-    except ValueError as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=repr(e))
-
 @router.post("/invoice", status_code=status.HTTP_201_CREATED)
 def post_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep, invoice : InvoicePost) -> Invoice:
-    if session.exec(select(Account.id).where(Account.id == invoice.origin_id)).first() is None or session.exec(select(Account.id).where(Account.id == invoice.destination_id)).first() is None:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="origin_id or destination_id object does not exist in the DB")
+
+    #if either origin or destination accounts do not exist raise an http error
+#    if (not accountExists(invoice.origin_id, session)) and (not accountExists(invoice.destination_id, session)):
+#        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="origin_id or destination_id object does not exist in the DB")
 
     invoice_db = Invoice(
         amount=invoice.amount,
@@ -93,29 +71,28 @@ def post_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session
     session.refresh(invoice_db)
     return invoice_db
 
+#checks if an account exsits
+def accountExists(account_id : int, session : SessionDep) -> bool:
+    return (session.exec(select(Account.id).where(Account.id == account_id)).first() is None) or (session.exec(select(Account.id).where(Account.id == account_id)).first() is None)
+
 @router.get("/invoices", status_code=status.HTTP_200_OK)
 def get_invoices(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep) -> list[InvoiceGet]:
     invoices_db = list(session.exec(select(Invoice)).all())
-    invoices = []
-    for invoice in invoices_db:
-        if invoice.origin is None or invoice.destination is None:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="the origin or destination can not be null -> this is a db error contact developer",
-            )
-
-        invoices.append(
+    
+    invoices_response = []
+    for invoice_db in invoices_db:
+        invoices_response.append(
             InvoiceGet(
-                id=invoice.id,
-                amount=invoice.amount,
-                due=invoice.due,
-                issued=invoice.issued,
-                origin=invoice.origin.name,
-                destination=invoice.destination.name,
+                id=invoice_db.id,
+                origin_name=invoice_db.origin.name,
+                destination_name=invoice_db.destination.name,
+                amount=invoice_db.amount,
+                due=invoice_db.due,
+                issued=invoice_db.issued
             )
         )
-
-    return invoices
+    
+    return invoices_response
 
 @router.delete("/invoice/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_invoice(current_user : Annotated[str, Depends(getCurrentUser)], session : SessionDep, id : int):
@@ -129,3 +106,5 @@ def delete_invoice(current_user : Annotated[str, Depends(getCurrentUser)], sessi
 
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=repr(e))
+    
+

@@ -1,0 +1,3 @@
+in pydantic:
+    field_validator -> runs before the instance exists, you pass a value to be checked/modified and you must return the value 
+    model_validator -> after the instance is created so you pass the self object and return it to the pydantic if you made any changes

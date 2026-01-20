@@ -2,9 +2,9 @@ from user_manager import router as actions_router
 from invoice_manager import router as invoice_router
 from auth import router as auth_router
 from sqlmodel import SQLModel
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from database import *
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,7 +28,7 @@ async def lifespan(
 app = FastAPI(lifespan=lifespan)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-origins = ["http://localhost:3000", "http://localhost:3000/login"]
+origins = ["http://localhost:5173","http://localhost:4173"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -40,8 +40,9 @@ app.add_middleware(
 
 
 @app.get("/")
-async def index():
-    return FileResponse("static/invoice_1.html")
+async def index(request: Request):
+    return RedirectResponse(str(request.base_url) + "docs")
+    #return FileResponse("static/invoice_1.html")
 
 
 app.include_router(auth_router)

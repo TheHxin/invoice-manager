@@ -1,5 +1,5 @@
 import os
-from sqlmodel import create_engine, Session
+from sqlmodel import create_engine, Session, select
 from models.invoice import *
 from models.user import *
 from auth import hashPassword
@@ -21,11 +21,12 @@ with Session(engine) as session:
 		email="root",
 		password_hashed=hashPassword("root1234")
 	)
+
 	session.add(root_user)
 	session.commit()
 	session.refresh(root_user)
 
 	print("Root user created: ")
-	print(root_user.dict())
+	print(root_user.model_dump())
 
 print("db reinitiated")

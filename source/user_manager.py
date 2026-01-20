@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Response
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import UnmappedInstanceError
 from auth import hashPassword, getCurrentUser
 from sqlmodel import select
 from models.user import *
@@ -74,5 +75,7 @@ def delete_user(current_user: Annotated[UserBase, Depends(getCurrentUser)], id: 
         session.commit()
 
         return Response(status_code=status.HTTP_204_NO_CONTENT)
+    except UnmappedInstanceError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No user with this id exists.")
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=repr(e))
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=repr(e) + "Contact developer")
